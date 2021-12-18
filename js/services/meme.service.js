@@ -58,7 +58,8 @@ var gMeme = {
         fill: 'white',
         size: 30,
         align: 'center',
-        isgrab: false,
+        isDrag: false,
+        isSelected: false,
 
         pos: {
             x: 250,
@@ -80,7 +81,7 @@ function updateSelectedId(imgId) {
 }
 
 function getElImgById(imgId) {
-    console.log(imgId, 'imgId');
+    // console.log(imgId, 'imgId');
     return document.querySelector(`[src="images/${imgId}.jpg"]`);
 }
 
@@ -124,7 +125,8 @@ function addTextLine() {
         fill: 'white',
         size: 30,
         align: 'center',
-        isgrab: false,
+        isDrag: false,
+        isSelected: false,
 
         pos: {
             x: gCanvas.width / 2,
@@ -162,4 +164,29 @@ function ShowGalleryPage() {
     document.getElementById('about').style.display = 'block';
     document.querySelector('.canvas-page-container').style.display = 'none';
     document.getElementById('memesPage').style.display = 'none';
+}
+
+function getLine() {
+    return gMeme.lines[gMeme.selectedLineIdx];
+}
+
+
+function isLineClicked(clickedPos) {
+    const currLine = gMeme.lines[gMeme.selectedLineIdx];
+    const posX = currLine.pos.x;
+    const posY = currLine.pos.y;
+    var textWidth = gCtx.measureText(currLine.txt).width + 20;
+    var textHight = currLine.size + 20;
+    return Math.abs(clickedPos.x - posX) <= textWidth / 2 && Math.abs(clickedPos.y - posY) <= textHight / 2
+}
+
+
+function setLineDrag(isDrag) {
+    gMeme.lines[gMeme.selectedLineIdx].isDrag = isDrag;
+}
+
+function moveLine(dx, dy) {
+    gMeme.lines[gMeme.selectedLineIdx].pos.x += dx
+    gMeme.lines[gMeme.selectedLineIdx].pos.y += dy
+
 }
